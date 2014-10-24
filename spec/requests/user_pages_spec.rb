@@ -6,10 +6,20 @@ describe "UserPages" do
 
 	describe "profile page" do
 		let(:user) { FactoryGirl.create(:user) }
+		let!(:m1) { FactoryGirl.create(:book, user: user, name: "Foo") }
+		let!(:m2) { FactoryGirl.create(:book, user: user, name: "Bar") }
+
+		before { sign_in user }
 		before { visit user_path(user) }
 
 		it { should have_content(user.name) }
 		it { should have_title(user.name) }
+
+		describe "books" do
+			it { should have_content(m1.name) }
+			it { should have_content(m2.name) }
+			it { should have_content(user.books.count) }
+		end
 	end
 
 	describe "singup page" do

@@ -1,16 +1,34 @@
 <% provide(:title, 'Home') %>
+<% if signed_in? %>
+	<div class="row">
+		<aside class="span4">
+			<section>
+				<%= render 'shared/user_info' %>
+			</section>
+			<section>
+				<%= render 'shared/book_form' %>
+			</section>
+		</aside>
+		<div class="span8">
+			<h3>Book List</h3>
+			<%= render 'shared/feed' %>
+		</div>
+	</div>
 
-<div class="center hero-unit">
-	<h1>Welcome to the Sample App</h1>
+<% else %>
 
-	<h2>
-		This is the home page for the
-		<a href="http://railstutorial.org/">Ruby on Rails Turorial</a>
-		sample application.
-	</h2>
+	<div class="center hero-unit">
+		<h1>Welcome to the Sample App</h1>
 
-	<%= link_to "Sign up now!", signup_path, class: "btn-large btn-primary" %>
-</div>
+		<h2>
+			This is the home page for the
+			<a href="http://railstutorial.org/">Ruby on Rails Turorial</a>
+			sample application.
+		</h2>
 
-<%= link_to image_tag("rails.png", alt: "Rails"), 'http://rubyrails.org' %>
+		<%= link_to "Sign up now!", signup_path, class: "btn-large btn-primary" %>
+	</div>
 
+	<%= link_to image_tag("rails.png", alt: "Rails"), 'http://rubyrails.org' %>
+
+<% end %>

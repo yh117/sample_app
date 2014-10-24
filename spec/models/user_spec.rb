@@ -17,6 +17,9 @@ describe User do
 	it { should respond_to(:remember_token) }
 	it { should respond_to(:authenticate) }
 
+	it { should respond_to(:books) }
+	it { should respond_to(:feed) }
+
 	it { should be_valid }
 
 	describe "when name is not present" do
@@ -111,5 +114,24 @@ describe User do
 	describe "remember token" do
 		before { @user.save }
 		its(:remember_token) { should_not be_blank }
+	end
+
+	describe "book associations" do
+		before { @user.save }
+		let!(:older_book) do
+			FactoryGirl.create(:book, user: @user, created_at: 1.day.ago)
+		end
+		let!(:newer_book) do
+			FactoryGirl.create(:book, user: @user, created_at: 1.hour.ago)
+		end
+
+		it "should have the right books in the right order" do
+			expect(@user.books.to_a).to eq [newer_book, older_book]
+		end
+
+		describe "status" do
+			its(:feed) { should include(newer_book) }
+			its(:feed) { should include(older_book) }
+		end
 	end
 end

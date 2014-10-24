@@ -44,5 +44,25 @@ describe "Authentication" do
 				it { should have_link('Sign in') }
 			end
 		end
+
+		describe "authorization" do
+
+			describe "for non-signed-in users" do
+				let(:user) { FactoryGirl.create(:user) }
+
+				describe "in the Books controller" do
+
+					describe "submitting to the create action" do
+						before { post books_path }
+						specify { expect(response).to redirect_to(signin_path) }
+					end
+
+					describe "submitting to the destroy action" do
+						before { delete book_path(FactoryGirl.create(:book)) }
+						specify { expect(response).to redirect_to(signin_path) }
+					end
+				end
+			end
+		end
 	end
 end

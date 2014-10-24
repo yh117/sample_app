@@ -1,6 +1,9 @@
 class UsersController < ApplicationController
+  before_action :signed_in_user, only: [:show]
+
   def show
   	@user = User.find(params[:id])
+    @books = @user.books.paginate(page: params[:page])
   end
   def new
   	@user = User.new
